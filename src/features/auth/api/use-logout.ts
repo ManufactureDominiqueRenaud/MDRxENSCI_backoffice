@@ -17,6 +17,7 @@ export const useLogout = () => {
     },
     onSuccess: () => {
       toast.success("Déconnexion réussie !");
+      router.refresh();
       queryClient.invalidateQueries({ queryKey: ["current"] });
     },
   });

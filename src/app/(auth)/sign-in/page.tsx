@@ -15,7 +15,6 @@ export default async function Page() {
   const user = await getCurrent();
   if (user instanceof AuthError) return;
   if (user) {
-    redirect("/dashboard/votes");
   }
 
   return (

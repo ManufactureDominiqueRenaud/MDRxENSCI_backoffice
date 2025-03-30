@@ -30,7 +30,7 @@ export default async function Page() {
             className="flex items-center gap-4 p-4 border rounded-lg shadow-md"
           >
             <div className="overflow-hidden w-1/2 h-[200px] rounded-md">
-              <Image
+              <img
                 src={project.attributes.thumbnail.data.attributes.url}
                 alt={
                   project.attributes.thumbnail.data.attributes

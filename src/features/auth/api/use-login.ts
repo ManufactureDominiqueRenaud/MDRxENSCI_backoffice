@@ -24,6 +24,7 @@ export const useLogin = () => {
       } else {
         toast.error(response.message);
       }
+      router.push("/dashboard/votes");
       queryClient.invalidateQueries({ queryKey: ["current"] });
     },
     onError: (error: Error) => {
