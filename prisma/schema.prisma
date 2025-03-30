@@ -29,6 +29,6 @@ model User {
 
 model Project {
   id        String @id @unique
-  projectId Int
-  votes      Int
+  projectId Int    @unique
+  votes     Int
 }

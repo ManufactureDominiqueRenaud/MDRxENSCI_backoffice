@@ -1,5 +1,5 @@
 import { z } from "zod";
 
-export const GetUsersByIdsSchema = z.object({
-  userIds: z.array(z.string()),
+export const UpdateVotesSchema = z.object({
+  projectIds: z.array(z.number()).length(3),
 });
