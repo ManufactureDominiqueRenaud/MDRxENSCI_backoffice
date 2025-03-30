@@ -5,7 +5,6 @@ import users from "@/features/users/server/route";
 
 const app = new Hono().basePath("/api");
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const routes = app
   .route("/auth", auth)
   .route("/users", users)

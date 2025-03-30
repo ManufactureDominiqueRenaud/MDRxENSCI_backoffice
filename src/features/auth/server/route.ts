@@ -3,10 +3,8 @@ import { Hono } from "hono";
 import { loginSchema, signUpSchema } from "../schemas";
 import { deleteCookie, setCookie } from "hono/cookie";
 import { AUTH_COOKIE } from "../constants";
-import { HTTPException } from "hono/http-exception";
 import { avatars } from "@/data/avatars";
 import supabase from "@/lib/supabase";
-import { PrismaClient } from "@prisma/client";
 import prisma from "@/lib/prisma";
 import { cookies } from "next/headers";
 
@@ -56,7 +54,7 @@ const app = new Hono()
       return c.json({ success: false, message: "Une erreur est survenue !" });
     }
 
-    setCookie(c, AUTH_COOKIE, data?.session?.access_token!, {
+    setCookie(c, AUTH_COOKIE, data?.session?.access_token || "", {
       maxAge: 60 * 60 * 24 * 7, // 1 week
       httpOnly: true,
       sameSite: "strict",
@@ -97,7 +95,7 @@ const app = new Hono()
       return c.json({ success: false, message: "Une erreur est survenue !" });
     }
 
-    setCookie(c, AUTH_COOKIE, dataSignIn?.session?.access_token!, {
+    setCookie(c, AUTH_COOKIE, dataSignIn?.session?.access_token || "", {
       maxAge: 60 * 60 * 24 * 7, // 1 week
       httpOnly: true,
       sameSite: "strict",
