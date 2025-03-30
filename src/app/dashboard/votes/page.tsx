@@ -6,7 +6,6 @@ import { StrapiProjectsListData } from "@/types";
 import { Project } from "@prisma/client";
 import { LucideExternalLink } from "lucide-react";
 import { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -21,10 +20,61 @@ export default async function Page() {
   } = await fetchStrapiData(`api/projets?populate=*`, [`projects-fr`]);
   const votes: Project[] = await prisma.project.findMany();
 
+  // Ajouter un tri des projets par score décroissant
+  const sortedProjects = projectsData.data.sort((a, b) => {
+    const votesA = votes.find((vote) => vote.projectId === a.id)?.votes || 0;
+    const votesB = votes.find((vote) => vote.projectId === b.id)?.votes || 0;
+    return votesB - votesA; // Tri décroissant
+  });
+
+  // Calculer les scores et les positions
+  const projectScores = sortedProjects.map((project) => ({
+    ...project,
+    score: votes.find((vote) => vote.projectId === project.id)?.votes || 0,
+  }));
+
+  // Attribuer les couleurs en fonction des positions avec égalités
+  const getColorByRank = (rank: number) => {
+    switch (rank) {
+      case 1:
+        return "bg-green-500"; // Premier projet
+      case 2:
+        return "bg-orange-500"; // Deuxième projet
+      case 3:
+        return "bg-red-500"; // Troisième projet
+      default:
+        return "bg-slate-900"; // Couleur par défaut (gris)
+    }
+  };
+
+  // Identifier les rangs distincts et attribuer les couleurs
+  const rankedProjects = projectScores.map((project, index, array) => {
+    const rank =
+      array.findIndex(
+        (p) => p.score === project.score
+      ) + 1; // Trouver le rang basé sur le score
+    return {
+      ...project,
+      rank,
+    };
+  });
+
+  const distinctRanks = [...new Set(rankedProjects.map((p) => p.rank))];
+  const rankToColorMap = new Map<number, string>();
+
+  distinctRanks.forEach((rank, index) => {
+    rankToColorMap.set(rank, getColorByRank(index + 1));
+  });
+
+  const finalRankedProjects = rankedProjects.map((project) => ({
+    ...project,
+    color: rankToColorMap.get(project.rank) || "bg-slate-900",
+  }));
+
   return (
     <main className="p-8">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {projectsData.data.map((project) => (
+        {finalRankedProjects.map((project) => (
           <div
             key={project.id}
             className="flex items-center gap-4 p-4 border rounded-lg shadow-md"
@@ -43,6 +93,7 @@ export default async function Page() {
               <h2 className="text-xl font-semibold">
                 {project.attributes.projectTitle}
               </h2>
+              <p className="text-xs">id: {project.id}</p>
               <ul className="mt-2">
                 {project.attributes.studentList.map((student) => (
                   <li
@@ -53,21 +104,24 @@ export default async function Page() {
                   </li>
                 ))}
               </ul>
-              <p>
-                Number of votes :{" "}
-                {
-                  //Find the number of votes for the current project
-                  votes.find((vote) => vote.projectId === project.id)?.votes ||
-                    0
-                }
+              <p
+                className={`font-bold text-lg inline-block ${project.color} rounded-sm text-slate-50 px-4 py-1 mt-2`}
+              >
+                Score : {project.score}
               </p>
-              <Button variant="default" className="mt-4 gap-2" asChild>
+              <Button
+                variant="outline"
+                size={"sm"}
+                className="mt-4 gap-2"
+                asChild
+              >
                 <Link
                   href={`${process.env.NEXT_PUBLIC_WEBSITE_FRONT_URL}/fr/${project.id}`}
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="text-xs"
                 >
-                  <LucideExternalLink className="mr-2" size={16} />
+                  <LucideExternalLink size={8} />
                   Go to the project page
                 </Link>
               </Button>
