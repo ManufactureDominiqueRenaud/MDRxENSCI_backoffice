@@ -1,15 +1,13 @@
-import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
 import { getCurrent } from "@/features/auth/actions";
-import LogoutButton from "@/features/auth/components/logout-button";
 import prisma from "@/lib/prisma";
 import { fetchStrapiData } from "@/lib/strapi-api";
 import { StrapiProjectsListData } from "@/types";
+import { Project } from "@prisma/client";
 import { LucideExternalLink } from "lucide-react";
 import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect } from "react";
 
 export const metadata: Metadata = {
   title: "GoDigital - Dashboard Administrateur",
@@ -21,12 +19,7 @@ export default async function Page() {
   const projectsData: {
     data: StrapiProjectsListData;
   } = await fetchStrapiData(`api/projets?populate=*`, [`projects-fr`]);
-  const votes = await prisma.project.findMany({
-    select: {
-      projectId: true,
-      votes: true,
-    },
-  });
+  const votes: Project[] = await prisma.project.findMany();
 
   return (
     <main className="p-8">
