@@ -4,7 +4,6 @@ import { ConfirmVoteSchema, UpdateVotesSchema } from "../schemas";
 import prisma from "@/lib/prisma";
 import { CreateVoteSchema } from "../schemas";
 import { customAlphabet } from "nanoid";
-import { cors } from 'hono/cors'
 
 const generate6DigitCode = () =>
   Math.floor(100000 + Math.random() * 900000).toString();
@@ -14,10 +13,6 @@ const generateToken = customAlphabet(
 );
 
 const app = new Hono()
-
-.use('/api/*', cors({
-  origin: 'http://localhost:3000', // ou 'http://localhost:3000' pour plus de sécurité
-}))
   //*------------------*//
   //ALL GET REQUESTS API
   //*------------------*//
