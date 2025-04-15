@@ -9,9 +9,18 @@ const app = new Hono().basePath("/api");
 
 const routes = app
   .use(
-    "/api/*",
+    "*",
     cors({
-      origin: "*", // ou 'http://localhost:3000' pour plus de sécurité
+      origin: (origin) => {
+        return [
+          "http://localhost:3000",
+          "https://ton-site.vercel.app",
+        ].includes(origin ?? "")
+          ? origin
+          : "";
+      },
+      allowMethods: ["POST", "GET", "OPTIONS"],
+      allowHeaders: ["Content-Type"],
     })
   )
   .route("/auth", auth)
