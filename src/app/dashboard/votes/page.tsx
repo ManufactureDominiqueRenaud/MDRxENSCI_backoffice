@@ -3,7 +3,6 @@ import { getCurrent } from "@/features/auth/actions";
 import prisma from "@/lib/prisma";
 import { fetchStrapiData } from "@/lib/strapi-api";
 import { StrapiProjectsListData } from "@/types";
-import { Project } from "@prisma/client";
 import { LucideExternalLink } from "lucide-react";
 import { Metadata } from "next";
 import Link from "next/link";
@@ -18,19 +17,21 @@ export default async function Page() {
   const projectsData: {
     data: StrapiProjectsListData;
   } = await fetchStrapiData(`api/projets?populate=*`, [`projects-fr`]);
-  const votes: Project[] = await prisma.project.findMany();
+
+  // Refetch des votes directement depuis la base de données
+  const votes = await prisma.project.findMany();
 
   // Ajouter un tri des projets par score décroissant
   const sortedProjects = projectsData.data.sort((a, b) => {
-    const votesA = votes.find((vote) => vote.projectId === a.id)?.votes || 0;
-    const votesB = votes.find((vote) => vote.projectId === b.id)?.votes || 0;
+    const votesA = votes.find((vote) => vote.slug === a.attributes.slug)?.votes || 0;
+    const votesB = votes.find((vote) => vote.slug === b.attributes.slug)?.votes || 0;
     return votesB - votesA; // Tri décroissant
   });
 
   // Calculer les scores et les positions
   const projectScores = sortedProjects.map((project) => ({
     ...project,
-    score: votes.find((vote) => vote.projectId === project.id)?.votes || 0,
+    score: votes.find((vote) => vote.slug === project.attributes.slug)?.votes || 0,
   }));
 
   // Attribuer les couleurs en fonction des positions avec égalités
@@ -93,7 +94,7 @@ export default async function Page() {
               <h2 className="text-xl font-semibold">
                 {project.attributes.projectTitle}
               </h2>
-              <p className="text-xs">id: {project.id}</p>
+              <p className="text-xs">id: {project.attributes.slug}</p>
               <ul className="mt-2">
                 {project.attributes.studentList.map((student) => (
                   <li
@@ -116,7 +117,7 @@ export default async function Page() {
                 asChild
               >
                 <Link
-                  href={`${process.env.NEXT_PUBLIC_WEBSITE_FRONT_URL}/fr/${project.id}`}
+                  href={`${process.env.NEXT_PUBLIC_WEBSITE_FRONT_URL}/fr/${project.attributes.slug}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-xs"

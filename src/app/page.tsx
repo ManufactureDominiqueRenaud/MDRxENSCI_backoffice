@@ -13,10 +13,13 @@ export const metadata: Metadata = {
 
 export default async function Page() {
   const user = await getCurrent();
-    if (user instanceof AuthError) return;
-    if (user) {
-      redirect("/dashboard/votes");
-    }
+  if (user instanceof AuthError) return;
+  if (!user) {
+    redirect("/sign-in");
+  }
+  if (user) {
+    redirect("/dashboard/votes");
+  }
   return (
     <main className="p-8">
       <div className="flex items-centers gap-4 p-2">

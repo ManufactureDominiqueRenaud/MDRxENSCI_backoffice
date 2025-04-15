@@ -24,7 +24,7 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
   const data = [
     {
       name: "Votes",
-      url: "/votes",
+      url: "/dashboard/votes",
       icon: MedalIcon,
     },
   ];

@@ -1,6 +1,7 @@
 export type StrapiProjectsListData = {
   id: number;
   attributes: {
+    slug: string;
     projectTitle: string;
     studentList: {
       id: number;

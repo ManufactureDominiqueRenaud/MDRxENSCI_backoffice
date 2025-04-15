@@ -19,6 +19,13 @@ enum Role {
   USER
 }
 
+enum Enum {
+  ACTIVE
+  INACTIVE
+  EXPIRED
+  FINISHED
+}
+
 model User {
   id        String @id @unique
   email     String @unique
@@ -30,5 +37,17 @@ model User {
 model Project {
   id        String @id @unique
   projectId Int    @unique
+  slug     String @unique
   votes     Int
+}
+
+model Vote {
+  id            String   @id @unique
+  projectsVoted String[]
+  token         String   @unique
+  code          String
+  status        Enum     @default(ACTIVE)
+  email         String   @unique
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
