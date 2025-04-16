@@ -68,17 +68,8 @@ export const SendCodeEmailFR = ({
               >
                 {email}
               </Link>
-              ) venez de sélectionnez jusqu&apos;à trois projets que vous aimez sur{" "}
-              <strong>
-                {" "}
-                <Link
-                  href={`https://www.ensci.dominiquerenaud.com`}
-                  className="text-blue-600 no-underline"
-                >
-                  ensci.dominiquerenaud.com
-                </Link>
-              </strong>
-              .
+              ) venez de sélectionnez jusqu&apos;à trois projets que vous aimez
+              sur <strong> ensci.dominiquerenaud.com</strong>.
             </Text>
             <Section>
               <Row>
@@ -116,14 +107,16 @@ export const SendCodeEmailFR = ({
                 Utilisez ce code pour confirmer votre vote sur le site :{" "}
               </Text>
               <Button className="bg-[#000000] rounded text-white text-[12px] font-semibold no-underline text-center px-5 py-3">
-                {`$validationCode`}
+                {`${validationCode}`}
               </Button>
             </Section>
             <Hr className="border border-solid border-[#eaeaea] my-[26px] mx-0 w-full" />
             <Text className="text-[#666666] text-[12px] leading-[24px]">
-              Ce mail est envoyé à {" "}
-              <span className="text-black">{email}</span>. Ce code a été généré le
-              <span className="text-black">{new Date().toString()}</span>. Si vous n&apos;êtes pas le destinataire de ce mail, vous pouvez l&apos;ignorer.
+              Ce mail est envoyé à <span className="text-black">{email}</span>.
+              Ce code a été généré le
+              <span className="text-black">{new Date().toString()}</span>. Si
+              vous n&apos;êtes pas le destinataire de ce mail, vous pouvez
+              l&apos;ignorer.
             </Text>
           </Container>
         </Body>
@@ -175,12 +168,7 @@ export const SendCodeEmailEN = ({
               ) just choose three projects you like on{" "}
               <strong>
                 {" "}
-                <Link
-                  href={`ensci.dominiquerenaud.com`}
-                  className="text-blue-600 no-underline"
-                >
                   ensci.dominiquerenaud.com
-                </Link>
               </strong>
               .
             </Text>
@@ -220,14 +208,14 @@ export const SendCodeEmailEN = ({
                 Use this code to confirm your vote on the website:{" "}
               </Text>
               <Button className="bg-[#000000] rounded text-white text-[12px] font-semibold no-underline text-center px-5 py-3">
-                {`$validationCode`}
+                {`${validationCode}`}
               </Button>
             </Section>
             <Hr className="border border-solid border-[#eaeaea] my-[26px] mx-0 w-full" />
             <Text className="text-[#666666] text-[12px] leading-[24px]">
               This mail was intended for{" "}
-              <span className="text-black">{email}</span>. This code was sent
-              on <span className="text-black">{new Date().toString()}</span>. If
+              <span className="text-black">{email}</span>. This code was sent on{" "}
+              <span className="text-black">{new Date().toString()}</span>. If
               you were not expecting this email, you can ignore this email.
             </Text>
           </Container>

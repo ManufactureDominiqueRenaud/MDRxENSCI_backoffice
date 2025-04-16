@@ -5,7 +5,7 @@ import prisma from "@/lib/prisma";
 import { CreateVoteSchema } from "../schemas";
 import { customAlphabet } from "nanoid";
 import { Resend } from "resend";
-import { SendCodeEmailEN } from "@/emails/send-code";
+import { SendCodeEmailEN, SendCodeEmailFR } from "@/emails/send-code";
 
 const generate6DigitCode = () =>
   Math.floor(100000 + Math.random() * 900000).toString();
@@ -121,7 +121,7 @@ const app = new Hono()
           from: "MDR x ENSCi <noreply@ensci.dominiquerenaud.com>",
           to: [vote.email],
           subject: `[Code : ${vote.code}] | Confirmez votre vote MDRxESNCi !`,
-          react: SendCodeEmailEN({
+          react: SendCodeEmailFR({
             validationCode: vote.code,
             email: vote.email,
             imageProject1: images[0]
