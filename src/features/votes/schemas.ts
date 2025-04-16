@@ -8,6 +8,7 @@ export const CreateVoteSchema = z.object({
   email: z.string().email(),
   slugs: z.array(z.string()).min(1).max(3),
   images: z.array(z.string()).min(1).max(3),
+  locale: z.string(),
 });
 
 export const ConfirmVoteSchema = z.object({

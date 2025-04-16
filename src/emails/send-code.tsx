@@ -28,7 +28,111 @@ const baseUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
   : "";
 
-export const SendCodeEmail = ({
+export const SendCodeEmailFR = ({
+  validationCode,
+  email,
+  imageProject1,
+  imageProject2,
+  imageProject3,
+}: SendCodeEmailProps) => {
+  const previewText = `Utilisez [${validationCode}] ce code pour confirmer votre vote`;
+
+  return (
+    <Html>
+      <Head />
+      <Tailwind>
+        <Body className="bg-white my-auto mx-auto font-sans px-2">
+          <Preview>{previewText}</Preview>
+          <Container className="border border-solid border-[#eaeaea] rounded my-[40px] mx-auto p-[20px] max-w-[465px]">
+            <Section className="mt-[32px]">
+              <Img
+                src={`https://tekpzijxcpujrulsvtci.supabase.co/storage/v1/object/public/supabase/files/logo-mdr.svg-ec58deb5c530a10f966fa64dc09e9cd8.svg`}
+                width="100"
+                height="40"
+                alt="Manufacture Dominique Renaud Logo"
+                className="my-0 mx-auto"
+              />
+            </Section>
+            <Heading className="text-black text-[24px] font-normal text-center p-0 my-[30px] mx-0">
+              Confirmez <strong>votre vote</strong> avec ce{" "}
+              <strong>code</strong> :
+            </Heading>
+            <Text className="text-black text-[14px] leading-[24px]">
+              Bonjour,
+            </Text>
+            <Text className="text-black text-[14px] leading-[24px]">
+              <strong>Vous</strong> (
+              <Link
+                href={`mailto:${email}`}
+                className="text-blue-600 no-underline"
+              >
+                {email}
+              </Link>
+              ) venez de sélectionnez jusqu&apos;à trois projets que vous aimez sur{" "}
+              <strong>
+                {" "}
+                <Link
+                  href={`https://www.ensci.dominiquerenaud.com`}
+                  className="text-blue-600 no-underline"
+                >
+                  ensci.dominiquerenaud.com
+                </Link>
+              </strong>
+              .
+            </Text>
+            <Section>
+              <Row>
+                <Column align="right">
+                  <Img
+                    className="rounded-md"
+                    src={imageProject1}
+                    width="128"
+                    height="128"
+                    alt={`Project 1 Thmbnail`}
+                  />
+                </Column>
+                <Column align="center">
+                  <Img
+                    className="rounded-md"
+                    src={imageProject2}
+                    width="128"
+                    height="128"
+                    alt={`Project 2 Thmbnail`}
+                  />
+                </Column>
+                <Column align="left">
+                  <Img
+                    className="rounded-md"
+                    src={imageProject3}
+                    width="128"
+                    height="128"
+                    alt={`Project 3 Thmbnail`}
+                  />
+                </Column>
+              </Row>
+            </Section>
+            <Section className="text-center mt-[32px] mb-[32px]">
+              <Text className="text-black text-[14px] leading-[24px] text-center">
+                Utilisez ce code pour confirmer votre vote sur le site :{" "}
+              </Text>
+              <Button className="bg-[#000000] rounded text-white text-[12px] font-semibold no-underline text-center px-5 py-3">
+                {`$validationCode`}
+              </Button>
+            </Section>
+            <Hr className="border border-solid border-[#eaeaea] my-[26px] mx-0 w-full" />
+            <Text className="text-[#666666] text-[12px] leading-[24px]">
+              Ce mail est envoyé à {" "}
+              <span className="text-black">{email}</span>. Ce code a été généré le
+              <span className="text-black">{new Date().toString()}</span>. Si vous n&apos;êtes pas le destinataire de ce mail, vous pouvez l&apos;ignorer.
+            </Text>
+          </Container>
+        </Body>
+      </Tailwind>
+    </Html>
+  );
+};
+
+export const SendCodeEmailEN = ({
   validationCode,
   email,
   imageProject1,
@@ -86,8 +190,8 @@ export const SendCodeEmail = ({
                   <Img
                     className="rounded-md"
                     src={imageProject1}
-                    width="64"
-                    height="64"
+                    width="128"
+                    height="128"
                     alt={`Project 1 Thmbnail`}
                   />
                 </Column>
@@ -95,8 +199,8 @@ export const SendCodeEmail = ({
                   <Img
                     className="rounded-md"
                     src={imageProject2}
-                    width="64"
-                    height="64"
+                    width="128"
+                    height="128"
                     alt={`Project 2 Thmbnail`}
                   />
                 </Column>
@@ -104,27 +208,27 @@ export const SendCodeEmail = ({
                   <Img
                     className="rounded-md"
                     src={imageProject3}
-                    width="64"
-                    height="64"
+                    width="128"
+                    height="128"
                     alt={`Project 3 Thmbnail`}
                   />
                 </Column>
               </Row>
             </Section>
-            <Text className="text-black text-[14px] leading-[24px]">
-              use this code to confirm your vote on the website:{" "}
-            </Text>
             <Section className="text-center mt-[32px] mb-[32px]">
+              <Text className="text-black text-[14px] leading-[24px] text-center">
+                Use this code to confirm your vote on the website:{" "}
+              </Text>
               <Button className="bg-[#000000] rounded text-white text-[12px] font-semibold no-underline text-center px-5 py-3">
-                {validationCode}
+                {`$validationCode`}
               </Button>
             </Section>
             <Hr className="border border-solid border-[#eaeaea] my-[26px] mx-0 w-full" />
             <Text className="text-[#666666] text-[12px] leading-[24px]">
               This mail was intended for{" "}
-              <span className="text-black">{email}</span>. This invite was
-              sent on <span className="text-black">{(new Date()).toString()}</span>. If you
-              were not expecting this email, you can ignore this email.
+              <span className="text-black">{email}</span>. This code was sent
+              on <span className="text-black">{new Date().toString()}</span>. If
+              you were not expecting this email, you can ignore this email.
             </Text>
           </Container>
         </Body>
@@ -132,5 +236,3 @@ export const SendCodeEmail = ({
     </Html>
   );
 };
-
-export default SendCodeEmail;
