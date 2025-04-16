@@ -14,7 +14,10 @@ const routes = app
       origin: (origin) => {
         return [
           "http://localhost:3000",
-          "https://ton-site.vercel.app",
+          "http://localhost:3001",
+          "https://mdr-x-ensci-front-ix813qo0t.vercel.app",
+          "ensci.dominiquerenaud.com",
+          "https://mdr-x-ensci-front-manufacture-dominique-renauds-projects.vercel.app/fr",
         ].includes(origin ?? "")
           ? origin
           : "";
@@ -31,5 +34,4 @@ export const GET = handle(app);
 export const POST = handle(app);
 export const OPTIONS = handle(app);
 
-  
 export type AppType = typeof routes;
