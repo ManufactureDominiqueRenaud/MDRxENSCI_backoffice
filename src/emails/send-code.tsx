@@ -54,22 +54,21 @@ export const SendCodeEmailFR = ({
               />
             </Section>
             <Heading className="text-black text-[24px] font-normal text-center p-0 my-[30px] mx-0">
-              Confirmez <strong>votre vote</strong> avec ce{" "}
-              <strong>code</strong> :
+              Validation de votre vote - Design Contest Manufacture Dominique
+              Renaud x ENSCI Les Ateliers
             </Heading>
             <Text className="text-black text-[14px] leading-[24px]">
-              Bonjour,
+              Dans le cadre du projet collaboratif entre la Manufacture
+              Dominique Renaud et l&apos;ENSCI - Les Ateliers, nous vous
+              invitons à valider votre vote concernant les propositions
+              développées par les élèves.
             </Text>
             <Text className="text-black text-[14px] leading-[24px]">
-              <strong>Vous</strong> (
-              <Link
-                href={`mailto:${email}`}
-                className="text-blue-600 no-underline"
-              >
-                {email}
-              </Link>
-              ) venez de sélectionnez jusqu&apos;à trois projets que vous aimez
-              sur <strong> ensci.dominiquerenaud.com</strong>.
+              Ce vote marque une étape clé de ce projet qui mêle innovation,
+              transmission et création horlogère.
+            </Text>
+            <Text className="text-black text-[14px] leading-[24px]">
+              Votre sélection :
             </Text>
             <Section>
               <Row>
@@ -110,6 +109,10 @@ export const SendCodeEmailFR = ({
                 {`${validationCode}`}
               </Button>
             </Section>
+            <Text className="text-black text-[14px] leading-[24px]">
+              Merci pour votre participation et votre engagement.
+              <strong>L&apos;équipe Manufacture Dominique Renaud. </strong>
+            </Text>
             <Hr className="border border-solid border-[#eaeaea] my-[26px] mx-0 w-full" />
             <Text className="text-[#666666] text-[12px] leading-[24px]">
               Ce mail est envoyé à <span className="text-black">{email}</span>.
@@ -155,22 +158,16 @@ export const SendCodeEmailEN = ({
               <strong>code</strong> :
             </Heading>
             <Text className="text-black text-[14px] leading-[24px]">
-              Hello,
+              As part of the collaborative project between Manufacture Dominique
+              Renaud and ENSCI - Les Ateliers, we invite you to confirm your
+              vote regarding the proposals developed by the students.
             </Text>
             <Text className="text-black text-[14px] leading-[24px]">
-              <strong>You</strong> (
-              <Link
-                href={`mailto:${email}`}
-                className="text-blue-600 no-underline"
-              >
-                {email}
-              </Link>
-              ) just choose three projects you like on{" "}
-              <strong>
-                {" "}
-                  ensci.dominiquerenaud.com
-              </strong>
-              .
+              This vote marks a key milestone in this project, which blends
+              innovation, knowledge-sharing, and watchmaking creativity.
+            </Text>
+            <Text className="text-black text-[14px] leading-[24px]">
+              Your selection :
             </Text>
             <Section>
               <Row>
@@ -211,6 +208,10 @@ export const SendCodeEmailEN = ({
                 {`${validationCode}`}
               </Button>
             </Section>
+            <Text className="text-black text-[14px] leading-[24px]">
+              Thank you for your participation and commitment.
+              <strong>The Dominique Renaud Manufacture Team.</strong>
+            </Text>
             <Hr className="border border-solid border-[#eaeaea] my-[26px] mx-0 w-full" />
             <Text className="text-[#666666] text-[12px] leading-[24px]">
               This mail was intended for{" "}
