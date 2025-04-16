@@ -1,6 +1,6 @@
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
-import { ConfirmVoteSchema, DeleteVoteSchema, UpdateVotesSchema } from "../schemas";
+import { ConfirmVoteSchema, DeleteVoteSchema, ResendCodeSchema, UpdateVotesSchema } from "../schemas";
 import prisma from "@/lib/prisma";
 import { CreateVoteSchema } from "../schemas";
 import { customAlphabet } from "nanoid";
@@ -260,7 +260,7 @@ const app = new Hono()
 
     return c.json({ message: "Vote supprimé avec succès." });
   })
-  .post("resendCode", zValidator("json", CreateVoteSchema), async (c) => {
+  .post("resendCode", zValidator("json", ResendCodeSchema), async (c) => {
     const { email, images, locale } = c.req.valid("json");
 
     const vote = await prisma.vote.findUnique({

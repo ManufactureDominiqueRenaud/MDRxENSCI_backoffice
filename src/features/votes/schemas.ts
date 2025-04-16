@@ -20,3 +20,8 @@ export const DeleteVoteSchema = z.object({
   email: z.string().email(),
 });
 
+export const ResendCodeSchema = z.object({
+  email: z.string().email(),
+  images: z.array(z.string()).min(1).max(3),
+  locale: z.string(),
+});
