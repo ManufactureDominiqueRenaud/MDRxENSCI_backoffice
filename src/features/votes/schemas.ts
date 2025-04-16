@@ -16,3 +16,7 @@ export const ConfirmVoteSchema = z.object({
   code: z.string().length(6),
 });
 
+export const DeleteVoteSchema = z.object({
+  email: z.string().email(),
+});
+

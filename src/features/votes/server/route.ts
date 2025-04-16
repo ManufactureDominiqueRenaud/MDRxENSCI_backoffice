@@ -1,6 +1,6 @@
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
-import { ConfirmVoteSchema, UpdateVotesSchema } from "../schemas";
+import { ConfirmVoteSchema, DeleteVoteSchema, UpdateVotesSchema } from "../schemas";
 import prisma from "@/lib/prisma";
 import { CreateVoteSchema } from "../schemas";
 import { customAlphabet } from "nanoid";
@@ -236,6 +236,89 @@ const app = new Hono()
       message: "Vote confirmé avec succès.",
       updatedProjects: results,
     });
+  })
+  //*------------------*//
+  //DELETE PENDING VOTE API
+  //*------------------*//
+  .post("deleteVote", zValidator("json", DeleteVoteSchema), async (c) => {
+    const { email } = c.req.valid("json");
+
+    const vote = await prisma.vote.findUnique({
+      where: { email },
+    });
+
+    if (!vote) {
+      return c.json(
+        { error: "Aucun vote lié à cet email, merci de recommencer" },
+        400
+      );
+    }
+
+    await prisma.vote.delete({
+      where: { email },
+    });
+
+    return c.json({ message: "Vote supprimé avec succès." });
+  })
+  .post("resendCode", zValidator("json", CreateVoteSchema), async (c) => {
+    const { email, images, locale } = c.req.valid("json");
+
+    const vote = await prisma.vote.findUnique({
+      where: { email },
+    });
+    if (!vote) {
+      return c.json(
+        { error: "Aucun vote lié à cet email, merci de recommencer" },
+        400
+      );
+    }
+
+    try {
+      if (locale === "fr") {
+        await resend.emails.send({
+          from: "MDR x ENSCi <noreply@ensci.dominiquerenaud.com>",
+          to: [vote.email],
+          subject: `[Code : ${vote.code}] | Confirmez votre vote MDRxESNCi !`,
+          react: SendCodeEmailFR({
+            validationCode: vote.code,
+            email: vote.email,
+            imageProject1: images[0]
+              ? images[0]
+              : "https://ensci.dominiquerenaud.com/_next/image?url=https%3A%2F%2Ftekpzijxcpujrulsvtci.supabase.co%2Fstorage%2Fv1%2Fobject%2Fpublic%2Fsupabase%2Ffiles%2F2025_PO_040.jpg-4d5fabfdfe2385ee0c966235d1128868.jpg&w=1920&q=75",
+            imageProject2: images[1]
+              ? images[1]
+              : "https://ensci.dominiquerenaud.com/_next/image?url=https%3A%2F%2Ftekpzijxcpujrulsvtci.supabase.co%2Fstorage%2Fv1%2Fobject%2Fpublic%2Fsupabase%2Ffiles%2F2025_PO_040.jpg-4d5fabfdfe2385ee0c966235d1128868.jpg&w=1920&q=75",
+            imageProject3: images[2]
+              ? images[2]
+              : "https://ensci.dominiquerenaud.com/_next/image?url=https%3A%2F%2Ftekpzijxcpujrulsvtci.supabase.co%2Fstorage%2Fv1%2Fobject%2Fpublic%2Fsupabase%2Ffiles%2F2025_PO_040.jpg-4d5fabfdfe2385ee0c966235d1128868.jpg&w=1920&q=75",
+          }),
+        });
+      } else {
+        await resend.emails.send({
+          from: "MDR x ENSCi <noreply@ensci.dominiquerenaud.com>",
+          to: [vote.email],
+          subject: `[Code : ${vote.code}] | Confirm your vote MDRxESNCi !`,
+          react: SendCodeEmailEN({
+            validationCode: vote.code,
+            email: vote.email,
+            imageProject1: images[0]
+              ? images[0]
+              : "https://ensci.dominiquerenaud.com/_next/image?url=https%3A%2F%2Ftekpzijxcpujrulsvtci.supabase.co%2Fstorage%2Fv1%2Fobject%2Fpublic%2Fsupabase%2Ffiles%2F2025_PO_040.jpg-4d5fabfdfe2385ee0c966235d1128868.jpg&w=1920&q=75",
+            imageProject2: images[1]
+              ? images[1]
+              : "https://ensci.dominiquerenaud.com/_next/image?url=https%3A%2F%2Ftekpzijxcpujrulsvtci.supabase.co%2Fstorage%2Fv1%2Fobject%2Fpublic%2Fsupabase%2Ffiles%2F2025_PO_040.jpg-4d5fabfdfe2385ee0c966235d1128868.jpg&w=1920&q=75",
+            imageProject3: images[2]
+              ? images[2]
+              : "https://ensci.dominiquerenaud.com/_next/image?url=https%3A%2F%2Ftekpzijxcpujrulsvtci.supabase.co%2Fstorage%2Fv1%2Fobject%2Fpublic%2Fsupabase%2Ffiles%2F2025_PO_040.jpg-4d5fabfdfe2385ee0c966235d1128868.jpg&w=1920&q=75",
+          }),
+        });
+      }
+    } catch (error) {
+      console.error("Error sending email:", error);
+    }
+
+    return c.json({ data: vote });
   });
+
 
 export default app;
