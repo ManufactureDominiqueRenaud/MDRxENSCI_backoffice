@@ -4,6 +4,8 @@ import { ConfirmVoteSchema, UpdateVotesSchema } from "../schemas";
 import prisma from "@/lib/prisma";
 import { CreateVoteSchema } from "../schemas";
 import { customAlphabet } from "nanoid";
+import { Resend } from "resend";
+import { SendCodeEmail } from "@/emails/send-code";
 
 const generate6DigitCode = () =>
   Math.floor(100000 + Math.random() * 900000).toString();
@@ -12,6 +14,7 @@ const generateToken = customAlphabet(
   24
 );
 
+const resend = new Resend("re_j3JRyDbz_3Q4fJheg6G4TLNpcTXBKRHWw");
 const app = new Hono()
   //*------------------*//
   //ALL GET REQUESTS API
@@ -90,7 +93,7 @@ const app = new Hono()
   //CREATE PENDING VOTES API
   //*------------------*//
   .post("createVote", zValidator("json", CreateVoteSchema), async (c) => {
-    const { email, slugs } = c.req.valid("json");
+    const { email, slugs, images } = c.req.valid("json");
 
     // Vérifie que l'utilisateur n’a pas déjà voté
     const existingVote = await prisma.vote.findUnique({
@@ -111,6 +114,32 @@ const app = new Hono()
         projectsVoted: slugs,
       },
     });
+
+    try {
+      console.log("sending email to", vote.email);
+      const response = await resend.emails.send({
+        from: "MDR x ENSCi <noreply@ensci.dominiquerenaud.com>",
+        to: [vote.email],
+        subject: `[Code : ${vote.code}] | Confirmez votre vote MDRxESNCi !`,
+        react: SendCodeEmail({
+          validationCode: vote.code,
+          email: vote.email,
+          imageProject1: images[0]
+            ? images[0]
+            : "https://ensci.dominiquerenaud.com/_next/image?url=https%3A%2F%2Ftekpzijxcpujrulsvtci.supabase.co%2Fstorage%2Fv1%2Fobject%2Fpublic%2Fsupabase%2Ffiles%2F2025_PO_040.jpg-4d5fabfdfe2385ee0c966235d1128868.jpg&w=1920&q=75",
+          imageProject2: images[1]
+            ? images[1]
+            : "https://ensci.dominiquerenaud.com/_next/image?url=https%3A%2F%2Ftekpzijxcpujrulsvtci.supabase.co%2Fstorage%2Fv1%2Fobject%2Fpublic%2Fsupabase%2Ffiles%2F2025_PO_040.jpg-4d5fabfdfe2385ee0c966235d1128868.jpg&w=1920&q=75",
+          imageProject3: images[2]
+            ? images[2]
+            : "https://ensci.dominiquerenaud.com/_next/image?url=https%3A%2F%2Ftekpzijxcpujrulsvtci.supabase.co%2Fstorage%2Fv1%2Fobject%2Fpublic%2Fsupabase%2Ffiles%2F2025_PO_040.jpg-4d5fabfdfe2385ee0c966235d1128868.jpg&w=1920&q=75",
+        }),
+      });
+      console.log("Resend response:", response);
+      console.log("email sent to", vote.email);
+    } catch (error) {
+      console.error("Error sending email:", error);
+    }
 
     return c.json({ data: vote });
   })
