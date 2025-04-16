@@ -1,5 +1,5 @@
 {
-  "name": "gd-dashboard-v1",
+  "name": "mdr-x-ensci_backoffice",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -27,6 +27,7 @@
     "@radix-ui/react-switch": "^1.1.2",
     "@radix-ui/react-tooltip": "^1.1.6",
     "@radix-ui/react-visually-hidden": "^1.1.1",
+    "@react-email/components": "^0.0.36",
     "@supabase/supabase-js": "^2.49.1",
     "@tanstack/react-query": "5.59.0",
     "class-variance-authority": "^0.7.1",
