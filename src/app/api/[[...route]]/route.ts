@@ -16,7 +16,9 @@ const routes = app
           "http://localhost:3000",
           "http://localhost:3001",
           "https://mdr-x-ensci-front-ix813qo0t.vercel.app",
-          "ensci.dominiquerenaud.com",
+          "https://mdr-x-ensci-front-80ehs1g4r.vercel.app",
+          "https://ensci.dominiquerenaud.com",
+          "https://www.ensci.dominiquerenaud.com",
           "https://mdr-x-ensci-front-manufacture-dominique-renauds-projects.vercel.app/fr",
         ].includes(origin ?? "")
           ? origin
